@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Be My Valentine ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 :root {
     --yes-size: clamp(1.2rem, 4vw, 2rem);
@@ -67,7 +66,6 @@ button {
 }
 </style>
 </head>
-
 <body>
 
 <h1>Will you be my Valentine? ❤️</h1>
@@ -78,52 +76,57 @@ button {
 </div>
 
 <script>
-const noTexts = [
-    "Are you sure? 😐",
-    "Really sure? 🤨",
-    "Think again 😬",
-    "Last chance 😳",
-    "You’re testing me 😭",
-    "Why though 😠",
-    "Okay this is enough 😤"
-];
+    const noTexts = [
+        "Are you sure? 😐",
+        "Really sure? 🤨",
+        "Think again 😬",
+        "Last chance 😳",
+        "Why are you like this 😭",
+        "Okay… but no 😤",
+        "Stop clicking NO 😠"
+    ];
 
-let clicks = 0;
-let yesScale = 1;
+    let noClicks = 0;
+    let yesScale = 1;
 
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const container = document.querySelector(".buttons");
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
 
-noBtn.addEventListener("click", () => {
-    clicks++;
+    noBtn.addEventListener("click", () => {
+        noClicks++;
 
-    // Change NO text
-    if (clicks < noTexts.length) {
-        noBtn.textContent = noTexts[clicks];
-    }
+        // Change text
+        if (noClicks < noTexts.length) {
+            noBtn.textContent = noTexts[noClicks];
+        }
 
-    // Keep NO inside screen bounds
-    const maxX = container.clientWidth - noBtn.offsetWidth;
-    const maxY = container.clientHeight - noBtn.offsetHeight;
+        // Move NO button randomly
+        const maxX = window.innerWidth - noBtn.offsetWidth;
+        const maxY = window.innerHeight - noBtn.offsetHeight;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+        noBtn.style.left = Math.random() * maxX + "px";
+        noBtn.style.top = Math.random() * maxY + "px";
 
-    noBtn.style.left = `${x}px`;
-    noBtn.style.top = `${y}px`;
+        // Make YES bigger
+        yesScale += 0.3;
+        yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
 
-    // Grow YES safely
-    yesScale += 0.25;
-    yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
+        // Eventually remove NO
+        if (noClicks > 6) {
+            noBtn.style.display = "none";
+            yesBtn.style.transform = `translate(-50%, -20px) scale(${yesScale + 0.5})`;
+        }
+    });
 
-    // Remove NO after enough pressure
-    if (clicks >= 6) {
-        noBtn.remove();
-        yesBtn.style.top = "40%";
-        yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale + 0.5})`;
-    }
-});
+    yesBtn.addEventListener("click", () => {
+        document.body.innerHTML = `
+            <h1 style="color:white; font-size:3rem;">
+                YAY!!! 💕😍<br>
+                Best Valentine Ever ❤️
+            </h1>
+        `;
+    });
+</script>
 
-yesBtn.addEventListener("click", () => {
-    document.body.innerHTML = `
+</body>
+</html>
